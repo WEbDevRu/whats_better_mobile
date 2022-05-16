@@ -1,22 +1,16 @@
 module.exports = {
-  parser: "babel-eslint",
-  plugins: ["react", "eslint-plugin-react"],
-  extends: ["eslint:recommended", "plugin:react/recommended"],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
+  root: true,
+  extends: '@react-native-community',
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/no-shadow': ['error'],
+        'no-shadow': 'off',
+        'no-undef': 'off',
+      },
     },
-  },
-  rules: {
-    "react/prop-types": 0,
-  },
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
-  env: {
-    browser: true,
-    node: true,
-  },
+  ],
 };
