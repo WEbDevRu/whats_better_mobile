@@ -25,6 +25,7 @@ export type Comparison = {
 
 export type ComparisonCategory = {
   __typename?: 'ComparisonCategory';
+  comparisons: Array<Comparison>;
   createdAt: Scalars['String'];
   description: Scalars['String'];
   id?: Maybe<Scalars['ID']>;
