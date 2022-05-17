@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, StyleSheet,} from 'react-native';
+import {View, StyleSheet } from 'react-native';
 import {Comparisons} from '../../components/Comparisons';
 
-const MainPage = () => {
+const MainPage = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Comparisons />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Comparisons navigation={navigation} />
     </View>
   );
 };

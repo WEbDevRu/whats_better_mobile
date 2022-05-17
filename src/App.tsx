@@ -13,34 +13,36 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   useColorScheme,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {MainScreen} from './screens/MainScreen';
+import {ComparisonScreen} from './screens/ComparisonScreen';
 import AppContextProvider from './common/providers/AppContextProvider';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    width: '100%',
   };
 
   return (
-    <AppContextProvider>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <MainScreen />
-        </ScrollView>
-      </SafeAreaView>
-    </AppContextProvider>
+    <NavigationContainer>
+      <AppContextProvider>
+        <Stack.Navigator>
+          <Stack.Screen name="home" component={MainScreen} />
+          <Stack.Screen name="comparison" component={ComparisonScreen} />
+        </Stack.Navigator>
+      </AppContextProvider>
+    </NavigationContainer>
   );
 };
 

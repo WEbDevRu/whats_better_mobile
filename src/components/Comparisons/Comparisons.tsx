@@ -5,7 +5,7 @@ import {ComparisonCategory} from '../../../graphql/types/graphql';
 import {useQueryComparisonCategoryLazyQuery} from './types/Comparisions';
 import {ComparisonCard} from './ComparisonCard';
 
-const Comparisons = () => {
+const Comparisons = ({ navigation }) => {
   const [query, {data}] = useQueryComparisonCategoryLazyQuery();
   const [categories, setCategories] = useState<ComparisonCategory[]>();
 
@@ -26,6 +26,7 @@ const Comparisons = () => {
         width: '100%',
       }}>
       <Button onPress={query}>Fetch</Button>
+      <Button onPress={() => navigation.navigate('comparison')}>Fetch</Button>
       <View
         style={{
           flex: 1,
