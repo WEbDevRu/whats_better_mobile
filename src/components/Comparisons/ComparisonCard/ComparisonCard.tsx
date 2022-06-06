@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {Comparison} from '../../../../graphql/types/graphql';
 
 interface IProps {
   comparison: Partial<Comparison>;
+  onPress: () => void;
 }
 
-const ComparisonCard = ({comparison}: IProps) => {
+const ComparisonCard = ({comparison, onPress}: IProps) => {
   return (
-    <Card style={styles.container}>
+    <Card style={styles.container} onPress={onPress}>
       <Card.Content>
         <Title>{comparison.title}</Title>
         <Paragraph>{comparison.description}</Paragraph>

@@ -1,6 +1,7 @@
 import React, {ReactElement} from 'react';
-import { ApolloProvider } from '@apollo/client';
+import {ApolloProvider} from '@apollo/client';
 import apolloClient from '../../config/apolloClient';
+import { ComparisonProvider } from '../../context/ComparisonContext';
 
 interface PropsAppContextProvider {
   children: ReactElement;
@@ -9,7 +10,9 @@ interface PropsAppContextProvider {
 const AppContextProvider: React.FC<PropsAppContextProvider> = ({children}) => {
   return (
     <ApolloProvider client={apolloClient}>
-      {children}
+      <ComparisonProvider>
+        {children}
+      </ComparisonProvider>
     </ApolloProvider>
   );
 };

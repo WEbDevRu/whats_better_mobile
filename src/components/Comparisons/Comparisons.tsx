@@ -1,20 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Title, Headline, Button} from 'react-native-paper';
+import {Title} from 'react-native-paper';
 import {ComparisonCategory} from '../../../graphql/types/graphql';
 import {useQueryComparisonCategoryLazyQuery} from './types/Comparisions';
 import {ComparisonCard} from './ComparisonCard';
+import {useComparison} from '../../context/ComparisonContext';
 
-const Comparisons = ({ navigation }) => {
-  const [query, {data}] = useQueryComparisonCategoryLazyQuery();
+
+const Comparisons = ({navigation}) => {
+  const [query] = useQueryComparisonCategoryLazyQuery();
   const [categories, setCategories] = useState<ComparisonCategory[]>();
+  const {onInitComparison} = useComparison();
+
+  const handleOpenComparison = (comparisonId: string) => {
+    navigation.navigate('Whats better?');
+    onInitComparison({comparisonId});
+  };
 
   useEffect(() => {
-    setCategories(data?.queryComparisonCategory as ComparisonCategory[]);
-  }, [data]);
-
-  useEffect(() => {
-    query();
+    if (query) {
+      const handleInit = async () => {
+        const {data} = await query();
+        setCategories(data?.queryComparisonCategory as ComparisonCategory[]);
+      };
+      handleInit();
+    }
   }, [query]);
 
   return (
@@ -24,9 +34,8 @@ const Comparisons = ({ navigation }) => {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
+        padding: 10,
       }}>
-      <Button onPress={query}>Fetch</Button>
-      <Button onPress={() => navigation.navigate('comparison')}>Fetch</Button>
       <View
         style={{
           flex: 1,
@@ -34,7 +43,6 @@ const Comparisons = ({ navigation }) => {
           alignItems: 'flex-start',
           width: '100%',
         }}>
-        <Headline>Categories:</Headline>
         {categories?.map(category => (
           <View
             key={category.id}
@@ -43,7 +51,11 @@ const Comparisons = ({ navigation }) => {
             }}>
             <Title style={styles.categoryTitle}>{category.title}</Title>
             {category?.comparisons?.map(comparison => (
-              <ComparisonCard comparison={comparison} />
+              <ComparisonCard
+                key={comparison.id}
+                comparison={comparison}
+                onPress={() => handleOpenComparison(comparison?.id as string)}
+              />
             ))}
           </View>
         ))}
