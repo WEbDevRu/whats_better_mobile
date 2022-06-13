@@ -12,8 +12,7 @@ const ComparisonCard = ({comparison, onPress}: IProps) => {
   return (
     <Card style={styles.container} onPress={onPress}>
       <Card.Content>
-        <Title>{comparison.title}</Title>
-        <Paragraph>{comparison.description}</Paragraph>
+        <Title>{comparison.description}</Title>
       </Card.Content>
     </Card>
   );

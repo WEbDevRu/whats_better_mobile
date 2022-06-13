@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Title} from 'react-native-paper';
+import {Paragraph, Title} from 'react-native-paper';
 import {ComparisonCategory} from '../../../graphql/types/graphql';
 import {useQueryComparisonCategoryLazyQuery} from './types/Comparisions';
 import {ComparisonCard} from './ComparisonCard';
 import {useComparison} from '../../context/ComparisonContext';
+import {red50} from 'react-native-paper/lib/typescript/styles/colors';
 
 
 const Comparisons = ({navigation}) => {
@@ -50,13 +51,21 @@ const Comparisons = ({navigation}) => {
               width: '100%',
             }}>
             <Title style={styles.categoryTitle}>{category.title}</Title>
-            {category?.comparisons?.map(comparison => (
-              <ComparisonCard
-                key={comparison.id}
-                comparison={comparison}
-                onPress={() => handleOpenComparison(comparison?.id as string)}
-              />
-            ))}
+            {category?.comparisons?.length > 0 &&
+              category?.comparisons?.map(comparison => (
+                <ComparisonCard
+                  key={comparison.id}
+                  comparison={comparison}
+                  onPress={() => handleOpenComparison(comparison?.id as string)}
+                />
+              ))}
+            {category?.comparisons?.length === 0 && (
+                <View style={styles.noTextCont}>
+                    <Paragraph style={styles.noText}>
+                        No comparisons
+                    </Paragraph>
+                </View>
+            )}
           </View>
         ))}
       </View>
@@ -67,6 +76,14 @@ const Comparisons = ({navigation}) => {
 const styles = StyleSheet.create({
   categoryTitle: {
     marginTop: 15,
+  },
+  noText: {
+    textAlign: 'center',
+  },
+  noTextCont: {
+    width: '100%',
+    backgroundColor: '#ececec',
+    padding: 10,
   },
 });
 

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
-import {Text, Title} from 'react-native-paper';
+import {Text, Title, Card, Paragraph} from 'react-native-paper';
 import {useComparison} from '../../context/ComparisonContext';
 import {Comparison} from '../../components/Comparison';
 
@@ -27,6 +27,13 @@ const ComparisonScreen = () => {
     return (
       <View style={styles.endedCont}>
         <Title style={styles.startTitle}>Your result:</Title>
+        {comparisonState.retiredEntities.reverse().map(e => (
+          <Card style={styles.resultContainer} key={e.id}>
+            <Card.Content>
+              <Title>{e.title}</Title>
+            </Card.Content>
+          </Card>
+        ))}
       </View>
     );
   }
@@ -58,6 +65,11 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     padding: 7,
+  },
+  resultContainer: {
+    width: '100%',
+    padding: 7,
+    marginBottom: 10,
   },
   endedCont: {
     width: '100%',

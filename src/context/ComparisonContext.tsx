@@ -74,16 +74,16 @@ export const ComparisonProvider = (props: PropsInterface) => {
 
   const onVote = (data: IVote) => {
     setComparisonState(c => {
-      if (c.currentRoundEntities.length === 2) {
+      if (c.entities.length - c.retiredEntities.length === 2) {
         const retiredEntitiesCopy = [...c.retiredEntities];
         const votedEntityIndex = c.currentComparison.findIndex(
           e => e.id === data.entityId,
         );
         retiredEntitiesCopy.push(
-          c.currentComparison[votedEntityIndex === 0 ? 0 : 1],
+          c.currentComparison[votedEntityIndex === 0 ? 1 : 0],
         );
         retiredEntitiesCopy.push(
-          c.currentComparison[votedEntityIndex === 0 ? 1 : 0],
+          c.currentComparison[votedEntityIndex],
         );
         return {
           ...c,
@@ -91,7 +91,45 @@ export const ComparisonProvider = (props: PropsInterface) => {
           isEnded: true,
         };
       }
-      return c;
+      const retiredEntitiesCopy = [...c.retiredEntities];
+      const votedEntityIndex = c.currentComparison.findIndex(
+        e => e.id === data.entityId,
+      );
+      retiredEntitiesCopy.push(
+        c.currentComparison[votedEntityIndex === 0 ? 1 : 0],
+      );
+
+      const votedEntity0RoundIndex = c.currentRoundEntities.findIndex(
+        ce => ce.id === c.currentComparison[0].id,
+      );
+
+      const currentRoundEntities = [...c.currentRoundEntities];
+      currentRoundEntities.splice(votedEntity0RoundIndex, 1);
+      const votedEntity1RoundIndex = currentRoundEntities.findIndex(
+        ce => ce.id === c.currentComparison[1].id,
+      );
+      currentRoundEntities.splice(votedEntity1RoundIndex, 1);
+      let newRoundEntities = [];
+      if (currentRoundEntities.length === 0) {
+        const retiredIds = retiredEntitiesCopy.map(r => r.id);
+        newRoundEntities = c.entities.filter(cn => !retiredIds.includes(cn.id));
+        return {
+          ...c,
+          retiredEntities: retiredEntitiesCopy,
+          currentComparison: handleGetPair(newRoundEntities),
+          currentRoundEntities: newRoundEntities,
+          isRoundStart: true,
+        };
+      }
+
+      console.log(currentRoundEntities);
+
+      return {
+        ...c,
+        retiredEntities: retiredEntitiesCopy,
+        currentRoundEntities: currentRoundEntities,
+        currentComparison: handleGetPair(currentRoundEntities),
+      };
     });
   };
 
