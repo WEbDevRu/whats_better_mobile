@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Subheading, Button} from 'react-native-paper';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import {useTranslation} from "react-i18next";
 import {ComparisonEntity} from '../../../graphql/types/graphql';
 import {IVote} from '../../types/comparison';
 
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 const Comparison = ({currentComparison, onVote}: IProps) => {
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       <Subheading style={styles.entityName}>
@@ -39,7 +41,7 @@ const Comparison = ({currentComparison, onVote}: IProps) => {
         mode="contained"
         style={styles.button}
         onPress={() => onVote({entityId: currentComparison?.[1].id as string})}>
-        Select
+          {t('select')}
       </Button>
     </View>
   );
